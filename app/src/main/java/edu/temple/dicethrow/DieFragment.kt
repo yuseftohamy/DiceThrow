@@ -10,40 +10,48 @@ import kotlin.random.Random
 
 class DieFragment : Fragment() {
 
-    val DIESIDE = "sidenumber"
+  private lateinit var dieTextView: TextView
+  private var dieSides: Int = 6
 
-    lateinit var dieTextView: TextView
+  companion object {
+    private const val DIESIDE = "sidenumber"
 
-    var dieSides: Int = 6
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            it.getInt(DIESIDE).run {
-                dieSides = this
-            }
+    fun newInstance(sides: Int): DieFragment {
+      return DieFragment().apply {
+        arguments = Bundle().apply {
+          putInt(DIESIDE, sides)
         }
+      }
     }
+  }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_die, container, false).apply {
-            dieTextView = findViewById(R.id.dieTextView)
-        }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    arguments?.let {
+      dieSides = it.getInt(DIESIDE, 6)
     }
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        throwDie()
-        view.setOnClickListener{
-            throwDie()
-        }
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    return inflater.inflate(R.layout.fragment_die, container, false)
+  }
 
-    fun throwDie() {
-        dieTextView.text = Random.nextInt(dieSides).toString()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    dieTextView = view.findViewById(R.id.dieTextView)
+
+    throwDie()
+
+    view.setOnClickListener {
+      throwDie()
     }
+  }
+
+  fun throwDie() {
+    dieTextView.text = Random.nextInt(1, dieSides + 1).toString()
+  }
 }
