@@ -28,7 +28,7 @@ class DieFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {
-      dieSides = it.getInt(DIESIDE, 6)
+      dieSides = it.getInt(DIESIDE, 6) // Default to 6 if not provided
     }
   }
 
